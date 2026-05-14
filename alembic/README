@@ -1,0 +1,13 @@
+# Alembic
+
+Create migration:
+
+alembic revision --autogenerate -m "init"
+
+Apply latest migration:
+
+alembic upgrade head
+
+Rollback one migration:
+
+alembic downgrade -1
