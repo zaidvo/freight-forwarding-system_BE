@@ -2,13 +2,13 @@ from datetime import datetime
 from enum import Enum
 
 from sqlalchemy import DateTime, Enum as SQLAEnum, ForeignKey, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
 
 
 class UserRole(str, Enum):
-    SUPER_ADMIN = "super_admin"
+    ROOT = "root"
     USER = "user"
 
 
@@ -48,3 +48,4 @@ class User(Base):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
     )
+    groups = relationship("AccessGroup", secondary="user_groups", back_populates="users")

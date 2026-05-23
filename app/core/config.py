@@ -11,6 +11,10 @@ class Settings(BaseSettings):
     root_admin_full_name: str = "Root Admin"
     root_admin_email: str = "admin@example.com"
     root_admin_password: str = "admin"
+    backend_cors_origins: list[str] = [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ]
 
     database_url: str
 

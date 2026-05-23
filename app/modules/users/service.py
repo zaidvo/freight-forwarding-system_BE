@@ -45,7 +45,7 @@ class UserService:
             action=ActivityAction.CREATE_USER,
             target_user_id=user.id,
             success=True,
-            description=f"Super admin created user {user.full_name}",
+            description=f"Root created user {user.full_name}",
             ip_address=ip_address,
             user_agent=user_agent,
         )
@@ -60,10 +60,12 @@ class UserService:
         email: str | None = None,
         role: UserRole | None = None,
         status_value: UserStatus | None = None,
+        password: str | None = None,
         ip_address: str | None = None,
         user_agent: str | None = None,
     ) -> User:
         user = self._get_user_or_404(user_id)
+        self._ensure_not_root(user)
         if email is not None:
             existing_user = self.repository.get_by_email(email)
             if existing_user and existing_user.id != user.id:
@@ -75,13 +77,14 @@ class UserService:
             email=email.lower() if email else None,
             role=role,
             status=status_value,
+            password_hash=hash_password(password) if password else None,
         )
         self.activity_logs.log(
             actor_user_id=actor.id,
             action=ActivityAction.UPDATE_USER,
             target_user_id=user.id,
             success=True,
-            description=f"Super admin updated user {updated_user.full_name}",
+            description=f"Root updated user {updated_user.full_name}",
             ip_address=ip_address,
             user_agent=user_agent,
         )
@@ -96,13 +99,14 @@ class UserService:
         user_agent: str | None = None,
     ) -> User:
         user = self._get_user_or_404(user_id)
+        self._ensure_not_root(user)
         updated_user = self.repository.set_status(user, UserStatus.INACTIVE)
         self.activity_logs.log(
             actor_user_id=actor.id,
             action=ActivityAction.DEACTIVATE_USER,
             target_user_id=user.id,
             success=True,
-            description=f"Super admin deactivated user {updated_user.full_name}",
+            description=f"Root deactivated user {updated_user.full_name}",
             ip_address=ip_address,
             user_agent=user_agent,
         )
@@ -117,13 +121,14 @@ class UserService:
         user_agent: str | None = None,
     ) -> User:
         user = self._get_user_or_404(user_id)
+        self._ensure_not_root(user)
         updated_user = self.repository.set_status(user, UserStatus.ACTIVE)
         self.activity_logs.log(
             actor_user_id=actor.id,
             action=ActivityAction.UPDATE_USER,
             target_user_id=user.id,
             success=True,
-            description=f"Super admin activated user {updated_user.full_name}",
+            description=f"Root activated user {updated_user.full_name}",
             ip_address=ip_address,
             user_agent=user_agent,
         )
@@ -135,3 +140,7 @@ class UserService:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
         return user
+
+    def _ensure_not_root(self, user: User) -> None:
+        if user.role == UserRole.ROOT:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Root user cannot be updated or deleted")

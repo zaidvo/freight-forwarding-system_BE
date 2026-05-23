@@ -9,14 +9,13 @@ class UserCreate(BaseModel):
     full_name: str = Field(min_length=1, max_length=150)
     email: str = Field(min_length=3, max_length=255)
     password: str = Field(min_length=8, max_length=128)
-    role: UserRole = UserRole.USER
 
 
 class UserUpdate(BaseModel):
     full_name: str | None = Field(default=None, min_length=1, max_length=150)
     email: str | None = Field(default=None, min_length=3, max_length=255)
-    role: UserRole | None = None
     status: UserStatus | None = None
+    password: str | None = Field(default=None, min_length=8, max_length=128)
 
 
 class UserRead(BaseModel):

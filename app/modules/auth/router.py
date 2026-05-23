@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.common.response import make_response
 from app.db.session import get_db
-from app.modules.auth.dependencies import get_current_user
+from app.modules.auth.dependencies import get_accessible_module_slugs, get_current_user
 from app.modules.auth.schemas import (
     ChangePasswordRequest,
     ForgotPasswordRequest,
@@ -88,6 +88,11 @@ def change_password(
 @router.get("/me")
 def me(current_user: User = Depends(get_current_user)):
     return make_response(True, "Current user fetched", UserRead.model_validate(current_user).model_dump(mode="json"))
+
+
+@router.get("/me/access")
+def me_access(module_slugs: list[str] = Depends(get_accessible_module_slugs)):
+    return make_response(True, "Current user access fetched", {"modules": module_slugs})
 
 
 def _client_host(request: Request) -> str | None:
