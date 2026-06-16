@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     backend_cors_origins: list[str] = [
         "http://localhost:5173",
         "http://127.0.0.1:5173",
+        "http://82.112.254.202:3020"
     ]
 
     database_url: str
