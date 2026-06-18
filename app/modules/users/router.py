@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.common.response import make_response
 from app.db.session import get_db
-from app.modules.auth.dependencies import require_module_access
+from app.modules.auth.dependencies import require_module_access, require_root
 from app.modules.users.model import User, UserRole
 from app.modules.users.schemas import UserCreate, UserRead, UserUpdate
 from app.modules.users.service import UserService
@@ -31,7 +31,7 @@ def create_user(
     payload: UserCreate,
     request: Request,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_account_management),
+    current_user: User = Depends(require_root),
 ):
     user = UserService(db).create_user(
         full_name=payload.full_name,
@@ -51,7 +51,7 @@ def update_user(
     payload: UserUpdate,
     request: Request,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_account_management),
+    current_user: User = Depends(require_root),
 ):
     user = UserService(db).update_user(
         user_id=user_id,
@@ -71,7 +71,7 @@ def delete_user(
     user_id: int,
     request: Request,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_account_management),
+    current_user: User = Depends(require_root),
 ):
     user = UserService(db).deactivate_user(
         user_id=user_id,
@@ -87,7 +87,7 @@ def activate_user(
     user_id: int,
     request: Request,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_account_management),
+    current_user: User = Depends(require_root),
 ):
     user = UserService(db).activate_user(
         user_id=user_id,
