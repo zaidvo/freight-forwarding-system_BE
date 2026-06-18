@@ -40,7 +40,7 @@ class AccessService:
         if user.role == UserRole.ROOT:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Root user groups cannot be changed")
 
-        groups = [self._get_group_or_404(group_id) for group_id in group_ids]
+        groups = [self._get_group_or_404(group_id) for group_id in self._unique_ids(group_ids)]
         self.repository.set_user_groups(user, groups)
 
     def _get_group_or_404(self, group_id: int) -> AccessGroup:
@@ -50,6 +50,7 @@ class AccessService:
         return group
 
     def _get_modules_or_400(self, module_ids: list[int]) -> list:
+        module_ids = self._unique_ids(module_ids)
         modules = self.repository.get_modules(module_ids)
         found_ids = {module.id for module in modules}
         missing_ids = sorted(set(module_ids) - found_ids)
@@ -59,3 +60,7 @@ class AccessService:
                 detail=f"Invalid module id(s): {', '.join(str(module_id) for module_id in missing_ids)}",
             )
         return modules
+
+    @staticmethod
+    def _unique_ids(ids: list[int]) -> list[int]:
+        return list(dict.fromkeys(ids))

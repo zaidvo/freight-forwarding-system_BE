@@ -53,6 +53,8 @@ class AccessRepository:
         if description is not None:
             group.description = description
         if modules is not None:
+            group.modules.clear()
+            self.db.flush()
             group.modules = modules
 
         self.db.add(group)
