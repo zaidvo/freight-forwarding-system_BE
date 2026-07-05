@@ -4,3 +4,4 @@ sqlalchemy
 pydantic-settings
 psycopg[binary]
 alembic
+python-multipart

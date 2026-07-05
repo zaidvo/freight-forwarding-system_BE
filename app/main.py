@@ -10,6 +10,7 @@ from app.modules.auth.router import router as auth_router
 from app.modules.health import router as health_router
 from app.modules.modules.router import router as modules_router
 from app.modules.modules.seed import seed_modules
+from app.modules.trading_import.router import router as trading_import_router
 from app.modules.users.router import router as users_router
 from app.modules.users.seed import seed_root_admin
 
@@ -46,6 +47,7 @@ app.include_router(auth_router, prefix=settings.api_prefix)
 app.include_router(users_router, prefix=settings.api_prefix)
 app.include_router(modules_router, prefix=settings.api_prefix)
 app.include_router(groups_router, prefix=settings.api_prefix)
+app.include_router(trading_import_router, prefix=settings.api_prefix)
 
 
 @app.get("/", tags=["Root"])
