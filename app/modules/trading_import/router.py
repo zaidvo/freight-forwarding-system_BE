@@ -50,6 +50,11 @@ def create_record(
     record = TradingImportService(db).create_record(
         reference_no=payload.reference_no,
         title=payload.title,
+        customer=payload.customer,
+        salesperson=payload.salesperson,
+        company=payload.company,
+        expected_arrival_date=payload.expected_arrival_date,
+        remarks=payload.remarks,
         actor=current_user,
     )
     return make_response(True, "Trading import record created successfully", _serialize_record(record))
@@ -76,6 +81,11 @@ def update_record(
         record_id=record_id,
         reference_no=payload.reference_no,
         title=payload.title,
+        customer=payload.customer,
+        salesperson=payload.salesperson,
+        company=payload.company,
+        expected_arrival_date=payload.expected_arrival_date,
+        remarks=payload.remarks,
         status_value=payload.status,
     )
     return make_response(True, "Trading import record updated successfully", _serialize_record(record))

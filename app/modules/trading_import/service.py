@@ -40,7 +40,8 @@ CANONICAL_FIELD_ALIASES: dict[str, list[str]] = {
     "consignee_email": ["consigneeEmail", "consignee email"],
     "notify_party_address": ["notifyPartyAddress", "notify party address"],
     "notify_party_phone": ["notifyPartyPhone", "notify party phone"],
-    "notify_party_email": ["notifyPartyEmail", "notify party email"],    "forwarding_agent": ["forwarding agent", "agent", "forwardingAgent"],
+    "notify_party_email": ["notifyPartyEmail", "notify party email"],
+    "forwarding_agent": ["forwarding agent", "agent", "forwardingAgent"],
     "booking_no": ["booking no", "booking number", "booking", "bookingNo", "bookingNumber"],
     "draft_bl_no": ["draft bl no", "draft bill no", "draftBlNo"],
     "hbl_no": ["hbl no", "house bl no", "house bill no", "bill of lading no", "hblNumber"],
@@ -135,6 +136,11 @@ class TradingImportService:
         *,
         reference_no: str | None,
         title: str | None,
+        customer: str | None,
+        salesperson: str | None,
+        company: str | None,
+        expected_arrival_date: date | None,
+        remarks: str | None,
         actor: User,
     ) -> TradingSalesImportRecord:
         if reference_no and self.repository.get_by_reference_no(reference_no):
@@ -143,6 +149,11 @@ class TradingImportService:
         return self.repository.create_record(
             reference_no=reference_no,
             title=title,
+            customer=customer,
+            salesperson=salesperson,
+            company=company,
+            expected_arrival_date=expected_arrival_date,
+            remarks=remarks,
             status=TradingImportRecordStatus.DRAFT,
             created_by=actor.id,
         )
@@ -153,6 +164,11 @@ class TradingImportService:
         record_id: int,
         reference_no: str | None,
         title: str | None,
+        customer: str | None,
+        salesperson: str | None,
+        company: str | None,
+        expected_arrival_date: date | None,
+        remarks: str | None,
         status_value: TradingImportRecordStatus | None,
     ) -> TradingSalesImportRecord:
         record = self._get_record_or_404(record_id)
@@ -165,6 +181,11 @@ class TradingImportService:
             record,
             reference_no=reference_no,
             title=title,
+            customer=customer,
+            salesperson=salesperson,
+            company=company,
+            expected_arrival_date=expected_arrival_date,
+            remarks=remarks,
             status=status_value,
         )
 

@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.db.session import SessionLocal
 from app.modules.access.router import router as groups_router
+from app.modules.audit.router import router as activity_logs_router
 from app.modules.auth.router import router as auth_router
 from app.modules.health import router as health_router
 from app.modules.modules.router import router as modules_router
@@ -44,6 +45,7 @@ app.add_middleware(
 
 app.include_router(health_router, prefix=settings.api_prefix)
 app.include_router(auth_router, prefix=settings.api_prefix)
+app.include_router(activity_logs_router, prefix=settings.api_prefix)
 app.include_router(users_router, prefix=settings.api_prefix)
 app.include_router(modules_router, prefix=settings.api_prefix)
 app.include_router(groups_router, prefix=settings.api_prefix)

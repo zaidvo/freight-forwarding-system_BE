@@ -10,11 +10,21 @@ from app.modules.trading_import.model import TradingImportDocumentType, TradingI
 class TradingImportRecordCreate(BaseModel):
     reference_no: str | None = Field(default=None, max_length=80)
     title: str | None = Field(default=None, max_length=180)
+    customer: str | None = Field(default=None, max_length=180)
+    salesperson: str | None = Field(default=None, max_length=150)
+    company: str | None = Field(default=None, max_length=180)
+    expected_arrival_date: date | None = None
+    remarks: str | None = Field(default=None, max_length=1000)
 
 
 class TradingImportRecordUpdate(BaseModel):
     reference_no: str | None = Field(default=None, max_length=80)
     title: str | None = Field(default=None, max_length=180)
+    customer: str | None = Field(default=None, max_length=180)
+    salesperson: str | None = Field(default=None, max_length=150)
+    company: str | None = Field(default=None, max_length=180)
+    expected_arrival_date: date | None = None
+    remarks: str | None = Field(default=None, max_length=1000)
     status: TradingImportRecordStatus | None = None
 
 
@@ -141,6 +151,11 @@ class TradingImportRecordRead(BaseModel):
     id: int
     reference_no: str | None
     title: str | None
+    customer: str | None
+    salesperson: str | None
+    company: str | None
+    expected_arrival_date: date | None
+    remarks: str | None
     status: TradingImportRecordStatus
     created_by: int | None
     created_at: datetime
