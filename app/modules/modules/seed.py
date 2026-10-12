@@ -49,6 +49,15 @@ MODULE_SEED_DATA = [
         "is_active": False,
         "sort_order": 5,
     },
+    {
+        "name": "Indenting",
+        "slug": "indenting",
+        "icon": "handshake",
+        "color": "#f59e0b",
+        "route": "/indenting",
+        "is_active": True,
+        "sort_order": 6,
+    },
 ]
 
 
