@@ -58,6 +58,15 @@ MODULE_SEED_DATA = [
         "is_active": True,
         "sort_order": 6,
     },
+    {
+        "name": "Customers",
+        "slug": "customers",
+        "icon": "building-2",
+        "color": "#7c3aed",
+        "route": "/customers",
+        "is_active": True,
+        "sort_order": 7,
+    },
 ]
 
 

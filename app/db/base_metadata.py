@@ -10,6 +10,7 @@ from app.modules.indenting.model import (  # noqa: E402,F401
     IndentingDeal,
     IndentingParty,
 )
+from app.modules.customers.model import Customer, CustomerRoleLink  # noqa: E402,F401
 from app.modules.modules.model import Module  # noqa: E402,F401
 from app.modules.trading_import.model import (  # noqa: E402,F401
     TradingSalesDetentionInvoice,
